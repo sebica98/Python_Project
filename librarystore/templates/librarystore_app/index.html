@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "css/mystyle.css" %}"/>
+    <title>My Library</title>
+</head>
+<body>
+    <div class="home">
+        <div class="topnav">
+            {% for navbar_item in navbar_items %}
+        <a href="{{ navbar_item.url }}">{{ navbar_item.title }}</a>
+            {% endfor %}
+          </div>
+    <h1>Welcome to the library!</h1>
+    <p>
+        This is the right place for you! Feel free to discover our books and pick-up your
+        favorite ones! <br>
+        You can choose from a large variety of books on different subjects:
+        <ul>
+            <li>Science-Fiction SF</li>
+            <li>Personal Development</li>
+            <li>Classic Literature</li>
+            <li>Crime Novels</li>
+            <li>Kid's Literature</li>
+        </ul>
+        We hope you are enjoying the website! Every order which is greater than 50EUR 
+        has free shipping.
+    </p>
+    <h2>TOP BOOKS:</h2>
+        <section id="top-books">
+            <ul>
+            {% for book in book_items %}
+            <li>
+                <article class="post">
+                <h3>Book: {{book.title}} </h3>
+                <table>
+                    <tr>
+                        <td>Author</td>
+                        <td>Rating</td>
+                        <td>Bestseller</td>
+                        <td>Price</td>
+                    </tr>
+                    <tr>
+                        <td>{{book.author}}</td>
+                        <td>{{book.rating}}</td>
+                        <td>YES</td>
+                        <td>{{book.price}} EUR</td>
+                    </tr>
+                </table>
+                </article>
+            </li>
+            {% endfor %}
+            </ul>
+        </section>
+    </div>
+</body>
+</html>

@@ -1,0 +1,80 @@
+h1 {
+
+    text-align: center;
+    color:salmon;
+}
+
+html {
+  background: url("../images/background.jpg") no-repeat center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.home ul {
+    display: table;
+    margin: 0 auto;
+}
+
+.topnav {
+    background-color: #333;
+    overflow: hidden;
+  }
+  
+  /* Style the links inside the navigation bar */
+  .topnav a {
+    float: right;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  
+  /* Change the color of links on hover */
+  .topnav a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+
+  body {
+    text-align: center;
+    color:black;
+  }
+
+  #top-books {
+    background-color: lightgray;
+    padding: 1rem;
+    border-radius: 12px;
+    width: 80%;
+    margin: 0rem auto 2rem auto;
+    box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.4);
+    text-align: justify;
+    position: relative;
+  }
+  
+  #top-books ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 1rem;
+  }
+  
+  #top-books li {
+    flex: 1;
+  }
+
+  #top-books table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  #top-books td, th {
+    border: 1px solid darkslategrey;
+    text-align: left;
+    padding: 8px;
+  }
+  
