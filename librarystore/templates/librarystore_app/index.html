@@ -12,7 +12,9 @@
     <div class="home">
         <div class="topnav">
             {% for navbar_item in navbar_items %}
-        <a href="{{ navbar_item.url }}">{{ navbar_item.title }}</a>
+            {% if navbar_item.path_name %}
+            <a href="{% url navbar_item.path_name %}">{{ navbar_item.title }}</a>
+            {% endif %}
             {% endfor %}
           </div>
     <h1>Welcome to the library!</h1>
@@ -43,14 +45,27 @@
                         <td>Rating</td>
                         <td>Bestseller</td>
                         <td>Price</td>
+                        <td>In Stock:</td>
                     </tr>
                     <tr>
                         <td>{{book.author}}</td>
                         <td>{{book.rating}}</td>
                         <td>YES</td>
                         <td>{{book.price}} EUR</td>
+                        <td>{% if book.stock > 2 %}
+                            YES
+                            {% elif book.stock > 0 %}
+                            Last Stocks
+                            {% elif book.stock == 0 %}
+                            Out Of Stock
+                            {% endif %}    
+                        </td>
                     </tr>
                 </table>
+                <br>
+                <div class="wrapper">
+                    <button type="button" class="button">Add To Cart</button>
+                </div>
                 </article>
             </li>
             {% endfor %}

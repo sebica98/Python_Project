@@ -19,13 +19,14 @@ class Book(models.Model):
         validators=[MinValueValidator(1), MaxValueValidator(5)])
     author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, related_name="books")
     is_bestselling = models.BooleanField(default=False)
+    stock = models.IntegerField(default=10)
     price = models.FloatField(default=4.99)
     slug = models.SlugField(default="", null=False, blank=True, db_index = True)
 
 
 class Navbar(models.Model):
-    title = models.CharField(max_length=50)
-    url = models.URLField()
+    title = models.CharField(max_length=20)
+    path_name = models.CharField(max_length=20, default="")
 
     def __str__(self):
         return self.title

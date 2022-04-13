@@ -1,7 +1,7 @@
 h1 {
 
     text-align: center;
-    color:salmon;
+    color:black;
 }
 
 html {
@@ -48,8 +48,8 @@ html {
     padding: 1rem;
     border-radius: 12px;
     width: 80%;
-    margin: 0rem auto 2rem auto;
-    box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.4);
+    margin: 1rem auto 1rem auto;
+    box-shadow: 2px 2px 20px black;
     text-align: justify;
     position: relative;
   }
@@ -58,7 +58,7 @@ html {
     list-style: none;
     margin: 0;
     padding: 0;
-    display: flex;
+    display: block;
     gap: 1rem;
   }
   
@@ -78,3 +78,60 @@ html {
     padding: 8px;
   }
   
+  #all-books {
+    background-color: darkgrey;
+    padding: 1rem;
+    border-radius: 20px;
+    width: 80%;
+    margin: 1rem auto 1rem auto;
+    box-shadow: 5px 5px 20px black;
+    text-align: justify;
+    position: relative;
+  }
+
+  #all-books table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    border-color: black;
+    border-style: groove;
+  }
+
+  #all-books td, th {
+    border: 2px solid black;
+    text-align: center;
+    padding: 8px;
+  }
+
+  #all-books h2, h3 {
+    text-align: center;
+    color: darkred;
+  }
+
+  .wrapper {
+    text-align: center;
+  }
+
+  .button {
+    background-color: darkred;
+    border: 1rem;
+    color: black;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+
+  .pagination {
+    display: inline-block;
+  }
+
+  .pagination a {
+    color: black;
+    float: center;
+    padding: 8px 16px;
+    text-decoration: none;
+  }
