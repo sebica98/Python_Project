@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static "css/mystyle.css" %}"/>
-    <title>My Library</title>
+    <title>Library</title>
 </head>
 <body>
     <div class="home">
@@ -38,7 +38,7 @@
             {% for book in book_items %}
             <li>
                 <article class="post">
-                <h3>Book: {{book.title}} </h3>
+                <h3>Book: {{book.name}} </h3>
                 <table>
                     <tr>
                         <td>Author</td>
@@ -63,9 +63,6 @@
                     </tr>
                 </table>
                 <br>
-                <div class="wrapper">
-                    <button type="button" class="button">Add To Cart</button>
-                </div>
                 </article>
             </li>
             {% endfor %}

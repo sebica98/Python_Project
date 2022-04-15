@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{% load static %}
+{% load cart_tag %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "css/mystyle.css" %}"/>
+    <title>Cart</title>
+</head>
+<body>
+    <div class="topnav">
+        {% for navbar_item in navbar_items %}
+        {% if navbar_item.path_name %}
+        <a href="{% url navbar_item.path_name %}">{{ navbar_item.title }}</a>
+        {% endif %}
+        {% endfor %}
+      </div>
+      <section id="cart">
+      <h1>This is your cart! <br>
+          Click on purchase now to finish your order. 
+      </h1>
+      <p>
+
+        Total Length :: {{request.session.cart|length}}
+        
+        Cart Detail:
+      </p>
+        <br>
+        <div class="cart">
+        {% if request.session.cart.items %}
+        {% for key,value in request.session.cart.items %}
+        <table>
+          <tr>
+          <td>Product</td>
+          <td>Quantity</td>
+          <td>Price</td>
+          <td>Total</td>
+          </tr>
+
+          <tr>
+            <td> {{value.name}} </td>
+            <td> {{value.quantity}} 
+              <a href="{% url 'item_increment' value.product_id %}">Increment</a>
+              <a href="{% url 'item_decrement' value.product_id %}">Decrement</a>
+            </td>
+            <td> {{value.price}} </td>
+            <td> {{ value.price|multiply:value.quantity }}</td>
+            <br>
+            {% endfor %}
+          </tr>
+        </table>
+        <a href="{% url 'cart_clear' %}">Clear Cart</a>
+        {% else %}
+        Your Cart Is Empty!
+        {% endif %}
+        </div>
+      </section>
+</body>
+</html>

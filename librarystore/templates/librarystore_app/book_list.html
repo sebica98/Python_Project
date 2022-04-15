@@ -20,7 +20,7 @@
     <h2>All The Books</h2>
     <ul>
         {% for book in book_list %}
-        <h3>Book: {{book.title}} </h3>
+        <h3>Book: {{book.name}} </h3>
         <table>
             <tr>
                 <td>Author</td>
@@ -28,11 +28,18 @@
                 <td>Bestseller</td>
                 <td>Price</td>
                 <td>In Stock:</td>
+                <td>Cover:</td>
             </tr>
             <tr>
                 <td>{{book.author}}</td>
                 <td>{{book.rating}}</td>
-                <td>YES</td>
+                <td>
+                    {% if book.is_bestselling %}
+                    YES
+                    {% else %}
+                    NO
+                    {% endif %}
+                </td>
                 <td>{{book.price}} EUR</td>
                 <td>{% if book.stock > 2 %}
                     YES
@@ -42,10 +49,11 @@
                     Out Of Stock
                     {% endif %}    
                 </td>
+                <td><img src="{{book.image.url}}"></td>
             </tr>
         </table>
         <div class="wrapper">
-        <button type="button" class="button">Add To Cart</button>
+            <a href="{% url 'cart_add' book.id %}">Add To Cart</a>
         </div>
         {% endfor %}
     </ul>

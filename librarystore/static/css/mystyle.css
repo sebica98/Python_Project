@@ -103,6 +103,11 @@ html {
     padding: 8px;
   }
 
+  #all-books img {
+    width: 120px;
+    height: 200px;
+  }
+
   #all-books h2, h3 {
     text-align: center;
     color: darkred;
@@ -134,4 +139,39 @@ html {
     float: center;
     padding: 8px 16px;
     text-decoration: none;
+  }
+
+  .cart table{
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    border-color: black;
+    border-style: groove;
+  }
+
+  .cart td, tr {
+    border: 2px solid black;
+    text-align: center;
+    padding: 8px;
+  }
+
+  .wrapper {
+    font: bold 14px Arial;
+    text-decoration: none;
+    background-color: gray;
+    color: #333333;
+    padding: 4px 8px 4px 8px;
+    border-top: 1px solid #CCCCCC;
+    border-right: 1px solid #333333;
+    border-bottom: 1px solid #333333;
+    border-left: 1px solid #CCCCCC;
+  }
+
+  .register {
+    color: black;
+  }
+
+  .register ul {
+    display: table;
+    margin: 0 auto;
   }

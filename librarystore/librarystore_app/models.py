@@ -1,5 +1,7 @@
+from distutils.command.upload import upload
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+
 
 # Create your models here.
 class Author(models.Model):
@@ -14,7 +16,7 @@ class Author(models.Model):
 
 
 class Book(models.Model):
-    title = models.CharField(max_length=50)
+    name = models.CharField(max_length=50)
     rating = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)])
     author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, related_name="books")
@@ -22,6 +24,10 @@ class Book(models.Model):
     stock = models.IntegerField(default=10)
     price = models.FloatField(default=4.99)
     slug = models.SlugField(default="", null=False, blank=True, db_index = True)
+    image = models.ImageField(upload_to='products/', null=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Navbar(models.Model):
