@@ -10,21 +10,20 @@
     <title>Cart</title>
 </head>
 <body>
-    <div class="topnav">
-        {% for navbar_item in navbar_items %}
-        {% if navbar_item.path_name %}
-        <a href="{% url navbar_item.path_name %}">{{ navbar_item.title }}</a>
-        {% endif %}
-        {% endfor %}
-      </div>
+  <div class="topnav">
+    {% for navbar_item in navbar_items %}
+    {% if navbar_item.title == "Logout" and request.user.is_authenticated %}
+    <a href="{% url navbar_item.path_name %}">{{navbar_item.title}}</a>
+    {% elif navbar_item.title != "Logout" %}
+    <a href="{% url navbar_item.path_name %}">{{ navbar_item.title }}</a>
+    {% endif %}
+    {% endfor %}
+  </div>
       <section id="cart">
       <h1>This is your cart! <br>
           Click on purchase now to finish your order. 
       </h1>
-      <p>
-
-        Total Length :: {{request.session.cart|length}}
-        
+      <p>        
         Cart Detail:
       </p>
         <br>
@@ -51,10 +50,12 @@
             {% endfor %}
           </tr>
         </table>
-        <a href="{% url 'cart_clear' %}">Clear Cart</a>
-        {% else %}
-        Your Cart Is Empty!
         {% endif %}
+        <br>
+        <a href="{% url 'cart_clear' %}">Clear Cart</a>
+        <br>
+        <h2> 
+          TOTAL TO PAY: {{cart}}</h2>
         </div>
       </section>
 </body>

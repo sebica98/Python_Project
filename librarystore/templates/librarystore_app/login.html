@@ -11,11 +11,13 @@
 <body>
     <div class="topnav">
         {% for navbar_item in navbar_items %}
-        {% if navbar_item.path_name %}
+        {% if navbar_item.title == "Logout" and request.user.is_authenticated %}
+        <a href="{% url navbar_item.path_name %}">{{navbar_item.title}}</a>
+        {% elif navbar_item.title != "Logout" %}
         <a href="{% url navbar_item.path_name %}">{{ navbar_item.title }}</a>
         {% endif %}
         {% endfor %}
-    </div>
+      </div>
     <h2>Enter your account details and login!</h2>
     <form method="post">
         {% csrf_token %}

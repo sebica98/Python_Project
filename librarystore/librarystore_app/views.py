@@ -3,9 +3,10 @@ from django.shortcuts import render, redirect
 from .models import Navbar, Book
 from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from cart.cart import Cart
+from django.db.models import Sum
 
 
 # Create your views here.
@@ -17,7 +18,7 @@ def cart_add(request, id):
     return redirect("books")
 
 
-@login_required(login_url="/users/login")
+@login_required()
 def item_clear(request, id):
     cart = Cart(request)
     product = Book.objects.get(id=id)
@@ -25,7 +26,7 @@ def item_clear(request, id):
     return redirect("cart")
 
 
-@login_required(login_url="/users/login")
+@login_required()
 def item_increment(request, id):
     cart = Cart(request)
     product = Book.objects.get(id=id)
@@ -41,16 +42,11 @@ def item_decrement(request, id):
     return redirect("cart")
 
 
-@login_required(login_url="/users/login")
+@login_required(login_url="/login/")
 def cart_clear(request):
     cart = Cart(request)
     cart.clear()
     return redirect("cart")
-
-
-@login_required
-def cart_detail(request):
-    return render(request, 'cart/cart_detail.html')
 
 
 def index(request):
@@ -71,7 +67,9 @@ class BookListView(ListView):
 
 def show_cart(request):
     navbar_items = Navbar.objects.all()
-    return render(request, 'librarystore_app/cart_list.html', {'navbar_items': navbar_items})
+    cart = Cart(request)
+    return render(request, 'librarystore_app/cart_list.html', {'navbar_items': navbar_items,
+                                                               'cart': cart})
 
 
 def login_view(request):
@@ -103,3 +101,8 @@ def signup_view(request):
         form = UserCreationForm()
     return render(request, 'librarystore_app/register.html', {'form': form, 
                                                               'navbar_items':navbar_items})
+
+@login_required(login_url='/login/')
+def logout_view(request):
+    logout(request)
+    return redirect('/')
