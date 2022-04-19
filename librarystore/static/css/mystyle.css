@@ -184,3 +184,12 @@ html {
     text-decoration: none;
     display: inline-block;
   }
+
+  .pay-cart {
+    background-color: whitesmoke;
+    color: black;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+  }

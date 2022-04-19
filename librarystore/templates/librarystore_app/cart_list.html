@@ -56,8 +56,14 @@
         <a href="{% url 'cart_clear' %}">Clear Cart</a>
         </div>
         <br>
+        {% if request.session.cart.items %}
         <h2 style="color: white;"> 
-          TOTAL TO PAY: {{cart_sum}}</h2>
+          TOTAL TO PAY: {{cart_sum}}
+        </h2>
+          <div class="pay-cart">
+            <a href="">PURCHASE NOW</a>
+          </div>
+        {% endif %}
         </div>
       </section>
 </body>
