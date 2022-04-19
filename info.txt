@@ -1,0 +1,18 @@
+The first initial stable version of the website is ready.
+To test the app you need to install the packages from requirements.txt.
+Also in the cart.py from django-shopping-cart package you have to include these 2 methods in the Cart class:
+    def get(self, request):
+        #get the cart from a request
+        self.request = request
+        self.session = request.session
+        cart = self.session[settings.CART_SESSION_ID].values()
+        prices = [float(float(i["price"]) * float(i["quantity"])) for i in cart]
+        return sum(prices)
+
+    def restore_stock(self, request):
+        #restore the stock of products after clearing the cart
+        self.request = request
+        self.session = request.session
+        cart = self.session[settings.CART_SESSION_ID].values()
+        products = {i['product_id']: i['quantity'] for i in cart}
+        return products
