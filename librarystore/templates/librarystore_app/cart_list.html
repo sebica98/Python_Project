@@ -52,10 +52,12 @@
         </table>
         {% endif %}
         <br>
+        <div class="clear-cart">
         <a href="{% url 'cart_clear' %}">Clear Cart</a>
+        </div>
         <br>
-        <h2> 
-          TOTAL TO PAY: {{cart}}</h2>
+        <h2 style="color: white;"> 
+          TOTAL TO PAY: {{cart_sum}}</h2>
         </div>
       </section>
 </body>

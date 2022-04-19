@@ -14,7 +14,11 @@ from django.db.models import Sum
 def cart_add(request, id):
     cart = Cart(request)
     product = Book.objects.get(id=id)
+    if product.stock == 0:
+        return HttpResponse("Out of stock")
     cart.add(product=product)
+    product.stock -= 1
+    product.save()
     return redirect("books")
 
 
@@ -30,7 +34,11 @@ def item_clear(request, id):
 def item_increment(request, id):
     cart = Cart(request)
     product = Book.objects.get(id=id)
+    if product.stock == 0:
+        return HttpResponse("Out of stock")
     cart.add(product=product)
+    product.stock -= 1
+    product.save()
     return redirect("cart")
 
 
@@ -39,12 +47,19 @@ def item_decrement(request, id):
     cart = Cart(request)
     product = Book.objects.get(id=id)
     cart.decrement(product=product)
+    product.stock += 1
+    product.save()
     return redirect("cart")
 
 
 @login_required(login_url="/login/")
 def cart_clear(request):
     cart = Cart(request)
+    products = cart.restore_stock(request)
+    for key, value in products.items():
+        book = Book.objects.get(id=key)
+        book.stock += value
+        book.save()
     cart.clear()
     return redirect("cart")
 
@@ -68,8 +83,9 @@ class BookListView(ListView):
 def show_cart(request):
     navbar_items = Navbar.objects.all()
     cart = Cart(request)
+    cart_sum = cart.get(request)
     return render(request, 'librarystore_app/cart_list.html', {'navbar_items': navbar_items,
-                                                               'cart': cart})
+                                                               'cart_sum': cart_sum})
 
 
 def login_view(request):
