@@ -1,12 +1,13 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from .models import Navbar, Book
+from .models import Navbar, Book, Author
 from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from cart.cart import Cart
-from django.db.models import Sum
+from rest_framework import viewsets
+from .serializers import BookSerializer, AuthorSerializer
 
 
 # Create your views here.
@@ -122,3 +123,13 @@ def signup_view(request):
 def logout_view(request):
     logout(request)
     return redirect('/')
+
+
+class BookView(viewsets.ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+
+class AuthorView(viewsets.ModelViewSet):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
