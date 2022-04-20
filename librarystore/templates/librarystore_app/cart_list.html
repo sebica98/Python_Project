@@ -12,11 +12,11 @@
 <body>
   <div class="topnav">
     {% for navbar_item in navbar_items %}
-    {% if navbar_item.title == "Logout" and request.user.is_authenticated %}
-    <a href="{% url navbar_item.path_name %}">{{navbar_item.title}}</a>
-    {% elif navbar_item.title != "Logout" %}
-    <a href="{% url navbar_item.path_name %}">{{ navbar_item.title }}</a>
-    {% endif %}
+            {% if navbar_item.title == "Logout" and request.user.is_authenticated %}
+            <a href="{% url navbar_item.path_name %}">{{navbar_item.title}}</a>
+            {% elif navbar_item.title != "Logout" %}
+            <a href="{% url navbar_item.path_name %}">{{ navbar_item.title }}</a>
+            {% endif %}
     {% endfor %}
   </div>
       <section id="cart">
@@ -58,7 +58,7 @@
         <br>
         {% if request.session.cart.items %}
         <h2 style="color: white;"> 
-          TOTAL TO PAY: {{cart_sum}}
+          TOTAL TO PAY: {{cart_sum}} EUR
         </h2>
           <div class="pay-cart">
             <a href="">PURCHASE NOW</a>
