@@ -5,9 +5,10 @@ from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from cart.cart import Cart
-from rest_framework import viewsets
-from .serializers import BookSerializer, AuthorSerializer
+from rest_framework import viewsets, generics
+from .serializers import BookSerializer, AuthorSerializer, UserSerializer
 
 
 # Create your views here.
@@ -77,7 +78,7 @@ class BookListView(ListView):
     paginate_by = 3
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['navbar_list'] = Navbar.objects.all()
+        context['navbar_items'] = Navbar.objects.all()
         return context
 
 
@@ -133,3 +134,13 @@ class BookView(viewsets.ModelViewSet):
 class AuthorView(viewsets.ModelViewSet):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
+
+
+class UserList(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserDetail(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
