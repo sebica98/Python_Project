@@ -1,23 +1,7 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static "css/mystyle.css" %}"/>
-    <title>Register</title>
-</head>
+{% extends "librarystore_app/base.html" %}
+{% block title %}Register{% endblock %}
 <body>
-  <div class="topnav">
-    {% for navbar_item in navbar_items %}
-    {% if navbar_item.title == "Logout" and request.user.is_authenticated %}
-    <a href="{% url navbar_item.path_name %}">{{navbar_item.title}}</a>
-    {% elif navbar_item.title != "Logout" %}
-    <a href="{% url navbar_item.path_name %}">{{ navbar_item.title }}</a>
-    {% endif %}
-    {% endfor %}
-  </div>
+  {% block content %}
   <div class="register">
     <h2>Sign up</h2>
   <form method="post">
@@ -33,6 +17,7 @@
       {% endfor %}
     <button type="submit">Sign up</button>
   </form>
-</div>
+  </div>
+  {% endblock %}
 </body>
 </html>
