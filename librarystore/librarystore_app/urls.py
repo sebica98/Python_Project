@@ -22,6 +22,7 @@ urlpatterns = [
     path('cart/cart_clear/', views.cart_clear, name='cart_clear'),
     path('login/', views.login_view, name="login"),
     path('register/', views.signup_view, name="register"),
+    path('checkout/', views.purchase_view, name="checkout"),
     path('logout/', views.logout_view, name="logout"),
     path('api/', include(router.urls)),
     path('users/', views.UserList.as_view()),

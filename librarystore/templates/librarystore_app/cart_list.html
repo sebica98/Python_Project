@@ -9,7 +9,8 @@
       <h1>This is your cart! <br>
           Click on purchase now to finish your order. 
       </h1>
-      <p>        
+      <p>
+        <i class="fa fa-shopping-cart"></i>        
         Cart Detail:
       </p>
         <br>
@@ -47,7 +48,7 @@
           TOTAL TO PAY: {{cart_sum}} EUR
         </h2>
           <div class="pay-cart">
-            <a href="">PURCHASE NOW</a>
+            <a href="{% url 'checkout' %}">PURCHASE NOW</a>
           </div>
         {% endif %}
         </div>
