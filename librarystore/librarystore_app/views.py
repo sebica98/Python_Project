@@ -126,6 +126,15 @@ def logout_view(request):
     return redirect('/')
 
 
+@login_required(login_url='/login/')
+def purchase_view(request):
+    navbar_items = Navbar.objects.all()
+    cart = Cart(request)
+    cart_sum = cart.get(request)
+    return render(request, 'librarystore_app/checkout.html', {'navbar_items': navbar_items,
+                                                              'cart_sum': cart_sum})
+
+
 class BookView(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
