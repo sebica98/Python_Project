@@ -1,0 +1,33 @@
+{% extends "librarystore_app/base.html" %}
+{% block title %}Profile{% endblock %}
+<html lang="en">
+<body>
+  {% block content %}
+  <h2>Welcome, {{request.user.username}}! <br>
+    You can change your username or your password!
+  </h2>
+  <form method='POST' enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in u_form %}
+    <p>
+      {{ field.label_tag }}<br>
+      {{ field }}
+      {% for error in field.errors %}
+        <p style="color: red">{{ error }}</p>
+      {% endfor %}
+    </p>
+      {% endfor %}
+
+    {% for field in p_form %}
+    <p>
+      {{ field.label_tag }}<br>
+      {{ field }}
+      {% for error in field.errors %}
+        <p style="color: red">{{ error }}</p>
+      {% endfor %}
+    </p>
+    {% endfor %}
+    <button type='submit'>Update</button>
+</form>
+  {% endblock %}
+</body>

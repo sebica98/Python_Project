@@ -14,11 +14,21 @@
     <div class="topnav">
         {% for navbar_item in navbar_items %}
         {% if navbar_item.title == "Logout" and request.user.is_authenticated %}
-        <a href="{% url navbar_item.path_name %}">{{navbar_item.title}}</a>
+        <a href="{% url navbar_item.path_name %}" class="fa fa-sign-out">{{navbar_item.title}}</a>
         {% elif navbar_item.title == "Login" and request.user.is_authenticated %}
-        <a href="{% url navbar_item.path_name %}">Change Account</a>
+        <a href="{% url 'profile' %}" class="fa fa-user"> My Profile</a>
+        {% elif navbar_item.title == "Register" and request.user.is_authenticated %}
+        {% elif navbar_item.title == "Cart" %}
+        <a href="{% url navbar_item.path_name %}" class="fa fa-shopping-cart"> Cart</a>
+        {% elif navbar_item.title == "Books" %}
+        <a href="{% url navbar_item.path_name %}" class="fa fa-book"> Books</a>
+        {% elif navbar_item.title == "Home" %}
+        <a href="{% url navbar_item.path_name %}" class="fa fa-home"> Home</a>
+        {% elif navbar_item.title == "Register" %}
+        <a href="{% url navbar_item.path_name %}" class="fa fa-user"> Register</a>
         {% elif navbar_item.title != "Logout" %}
-        <a href="{% url navbar_item.path_name %}">{{ navbar_item.title }}</a>
+        <a href="{% url navbar_item.path_name %}" class="fa fa-user">{{ navbar_item.title }}</a>
+
         {% endif %}
         {% endfor %}
       </div>

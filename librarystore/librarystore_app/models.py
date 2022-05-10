@@ -39,3 +39,9 @@ class Navbar(models.Model):
 
     class Meta:
         ordering = ["id"]
+
+
+# class Order(models.MOdel):
+#     products = models.CharField(max_length=200)
+#     ordered_date = models.DateField(auto_now=True)
+#     price = models.FloatField()
