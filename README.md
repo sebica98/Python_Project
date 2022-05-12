@@ -6,5 +6,5 @@ The project is realised using the django framework from python.
 
 ![image](https://user-images.githubusercontent.com/60966815/168038113-7d768b27-c847-4154-82f1-c46b7c24caa9.png)
 
+![image](https://user-images.githubusercontent.com/60966815/168038390-52ba77c6-a653-4ba2-81ee-f8e1930aa263.png)
 
-![image](https://user-images.githubusercontent.com/60966815/163997341-fe2562ab-c376-4bd1-803e-ffdeac3977a7.png)
