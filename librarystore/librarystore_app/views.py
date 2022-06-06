@@ -1,4 +1,3 @@
-from ast import Pass
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .models import Navbar, Book, Author
@@ -8,66 +7,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib import messages
-from cart.cart import Cart
 from rest_framework import viewsets, generics
 from .serializers import BookSerializer, AuthorSerializer, UserSerializer
 from .forms import UpdateUserForm, PasswordChangeForm
 
 
 # Create your views here.
-@login_required(login_url="/login/")
-def cart_add(request, id):
-    cart = Cart(request)
-    product = Book.objects.get(id=id)
-    if product.stock == 0:
-        return HttpResponse("Out of stock")
-    cart.add(product=product)
-    product.stock -= 1
-    product.save()
-    return redirect("books")
-
-
-@login_required()
-def item_clear(request, id):
-    cart = Cart(request)
-    product = Book.objects.get(id=id)
-    cart.remove(product)
-    return redirect("cart")
-
-
-@login_required()
-def item_increment(request, id):
-    cart = Cart(request)
-    product = Book.objects.get(id=id)
-    if product.stock == 0:
-        return HttpResponse("Out of stock")
-    cart.add(product=product)
-    product.stock -= 1
-    product.save()
-    return redirect("cart")
-
-
-@login_required()
-def item_decrement(request, id):
-    cart = Cart(request)
-    product = Book.objects.get(id=id)
-    cart.decrement(product=product)
-    product.stock += 1
-    product.save()
-    return redirect("cart")
-
-
-@login_required(login_url="/login/")
-def cart_clear(request):
-    cart = Cart(request)
-    products = cart.restore_stock(request)
-    for key, value in products.items():
-        book = Book.objects.get(id=key)
-        book.stock += value
-        book.save()
-    cart.clear()
-    return redirect("cart")
-
 
 def index(request):
     if request.user.is_authenticated:
@@ -86,14 +31,6 @@ class BookListView(ListView):
         context = super().get_context_data(**kwargs)
         context['navbar_items'] = Navbar.objects.all()
         return context
-
-@login_required(login_url='/login/')
-def show_cart(request):
-    navbar_items = Navbar.objects.all().exclude(title="Register")
-    cart = Cart(request)
-    cart_sum = cart.get(request)
-    return render(request, 'librarystore_app/cart_list.html', {'navbar_items': navbar_items,
-                                                               'cart_sum': cart_sum})
 
 
 def login_view(request):
@@ -131,20 +68,9 @@ def logout_view(request):
     logout(request)
     return redirect('/')
 
-
-@login_required(login_url='/login/')
-def purchase_view(request):
-    navbar_items = Navbar.objects.all().exclude(title="Register")
-    cart = Cart(request)
-    cart_sum = cart.get(request)
-    return render(request, 'librarystore_app/checkout.html', {'navbar_items': navbar_items,
-                                                              'cart_sum': cart_sum})
-
 @login_required(login_url='/login/')
 def user_profile(request):
     navbar_items = Navbar.objects.all().exclude(title="Register")
-    cart = Cart(request)
-    cart_sum = cart.get(request)
     if request.method == 'POST':
         u_form = UpdateUserForm(request.POST,instance=request.user)
         p_form = PasswordChangeForm(data=request.POST, user=request.user)
@@ -159,7 +85,6 @@ def user_profile(request):
     return render(request, 'librarystore_app/user_profile.html', {'navbar_items': navbar_items,
                                                                   'u_form': u_form,
                                                                   'p_form': p_form,
-                                                                  'cart_sum': cart_sum,
                                                                   })
 
 class BookView(viewsets.ModelViewSet):
