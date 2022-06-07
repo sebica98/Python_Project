@@ -44,21 +44,6 @@ class Order(models.Model):
         return self.first_name
 
 
-class OrderProduct(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    #payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Book, on_delete=models.CASCADE)
-    quantity = models.IntegerField()
-    product_price = models.FloatField()
-    ordered = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.product.name
-
-
 class Payment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     payment_id = models.CharField(max_length=100)
@@ -69,3 +54,18 @@ class Payment(models.Model):
 
     def __str__(self):
         return self.payment_id
+
+
+class OrderProduct(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Book, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    product_price = models.FloatField()
+    ordered = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.product.name

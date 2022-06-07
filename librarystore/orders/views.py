@@ -1,8 +1,11 @@
+import json
 from turtle import title
-from django.shortcuts import render, redirect, HttpResponse
-from kart.models import Cart, CartItem
+from django.shortcuts import render, redirect
+from django.http import JsonResponse, HttpResponse
+from kart.models import CartItem
 from .forms import OrderForm
-from .models import Order, OrderProduct
+from .models import Order, OrderProduct, Payment
+from librarystore_app.models import Book
 from librarystore_app.models import Navbar
 from time import strftime
 import datetime
@@ -62,7 +65,7 @@ def place_order(request):
                 'order': order,
                 'cart_items': cart_items,
                 'total': total,
-                'grand_total': grand_total,
+                'grand_total': int(grand_total),
                 'navbar_items': navbar_items
             }
             return render(request, 'orders/payment.html', context)
@@ -70,4 +73,69 @@ def place_order(request):
         return redirect('checkout')
 
 def payment(request):
-    return render(request, 'orders/payment.html')
+
+    body = json.loads(request.body)
+    order = Order.objects.get(user=request.user, is_ordered=False, order_number=body['orderID'])
+
+    # Check for the quantity of the sold product
+    product = Book.objects.get(id=item.product_id)
+    if product.stock < item.quantity:
+        return HttpResponse('Out of stock')
+    else:
+        product.stock -= item.quantity
+        product.save()
+
+    payment = Payment(
+        user = request.user,
+        payment_id =  body['transID'],
+        payment_method = body['payment_method'],
+        amount_paid = order.order_total,
+        status = body['status'],
+    )
+    payment.save()
+    order.is_ordered = True
+    order.save()
+
+    # Move the cart items to order product table
+    cart_items = CartItem.objects.filter(user=request.user)
+
+    for item in cart_items:
+        orderproduct = OrderProduct()
+        orderproduct.order_id = order.id
+        orderproduct.payment = payment
+        orderproduct.user_id = request.user.id
+        orderproduct.product_id = item.product_id
+        orderproduct.quantity = item.quantity
+        orderproduct.product_price = item.product.price
+        orderproduct.ordered = True
+        orderproduct.save()
+
+    # Clear Cart
+    CartItem.objects.filter(user=request.user).delete()
+
+    data = {
+        'order_number': order.order_number,
+        'transID': payment.payment_id,
+    }
+
+    return JsonResponse(data)
+
+def order_complete(request):
+    navbar_items = Navbar.objects.all().exclude(title='register')
+    order_number = request.GET.get('order_number')
+    transID = request.GET.get('payment_id')
+    try:
+        order = Order.objects.get(order_number=order_number, is_ordered=True)
+        order_products = OrderProduct.objects.filter(order_id=order.id)
+        context = {
+            'order': order,
+            'order_products': order_products,
+            'navbar_items': navbar_items,
+            'order_number': order.order_number,
+            'transID': transID,
+            'payment': payment,
+        }
+        return render(request, 'orders/order_complete.html', context)
+
+    except (Payment.DoesNotExist, Order.DoesNotExist):
+        return redirect('home')
