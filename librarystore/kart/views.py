@@ -20,10 +20,6 @@ def add_cart(request, product_id):
             return HttpResponse("Out of stock")
     # If the user is authenticated
     if current_user.is_authenticated:
-        product.stock -= 1
-        if product.stock == -1:
-            return HttpResponse("Out of stock")
-        product.save()
         is_cart_item_exists = CartItem.objects.filter(product=product, user=current_user).exists()
         if is_cart_item_exists:
             item = CartItem.objects.get(product=product, user=current_user)
@@ -48,8 +44,6 @@ def add_cart(request, product_id):
                 cart_id = _cart_id(request)
             )
         cart.save()
-
-        product.stock -= 1
         product.save()
 
         is_cart_item_exists = CartItem.objects.filter(product=product, cart=cart).exists()
@@ -67,7 +61,6 @@ def add_cart(request, product_id):
             cart_item.save()
 
         return redirect('cart')
-
 
 def cart(request, total=0, quantity=0, cart_items=None):
     try:
@@ -108,9 +101,6 @@ def remove_cart(request, product_id, cart_item_id):
         else:
             cart = Cart.objects.get(cart_id=_cart_id(request))
             cart_item = CartItem.objects.get(product=product, cart=cart, id=cart_item_id)
-        
-        product.stock += 1
-        product.save()
 
         if cart_item.quantity > 1:
             cart_item.quantity -= 1
@@ -129,9 +119,6 @@ def remove_cart_item(request, product_id, cart_item_id):
     else:
         cart = Cart.objects.get(cart_id=_cart_id(request))
         cart_item = CartItem.objects.get(product=product, cart=cart, id=cart_item_id)
-
-    product.stock += cart_item.quantity
-    product.save()
 
     cart_item.delete()
     return redirect('cart')
