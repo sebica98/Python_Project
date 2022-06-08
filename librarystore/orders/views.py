@@ -77,14 +77,6 @@ def payment(request):
     body = json.loads(request.body)
     order = Order.objects.get(user=request.user, is_ordered=False, order_number=body['orderID'])
 
-    # Check for the quantity of the sold product
-    product = Book.objects.get(id=item.product_id)
-    if product.stock < item.quantity:
-        return HttpResponse('Out of stock')
-    else:
-        product.stock -= item.quantity
-        product.save()
-
     payment = Payment(
         user = request.user,
         payment_id =  body['transID'],
@@ -109,6 +101,14 @@ def payment(request):
         orderproduct.product_price = item.product.price
         orderproduct.ordered = True
         orderproduct.save()
+
+        # Check for the quantity of the sold product
+        product = Book.objects.get(id=item.product_id)
+        if product.stock < item.quantity:
+            return HttpResponse('Out of stock')
+        else:
+            product.stock -= item.quantity
+            product.save()
 
     # Clear Cart
     CartItem.objects.filter(user=request.user).delete()
