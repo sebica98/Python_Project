@@ -1,4 +1,4 @@
-{% extends 'librarystore_app/base.html' %}
+{% extends 'includes/base.html' %}
 
 {% load static %}
 
@@ -136,6 +136,7 @@
 	var orderID = "{{order.order_number}}"
 	var payment_method = 'PayPal'
     var redirect_url = "{% url 'order_complete' %}"
+    var failed_url = "{% url 'failed_order' %}"
 
         paypal.Buttons({
 
@@ -170,6 +171,9 @@
 
                         })
                         .then((response) => response.json())
+                        .then((data2) => {
+                            window.location.href = failed_url + '?order_number='+data2.order_number;
+                        })
 				        .then((data) => {
 						window.location.href = redirect_url + '?order_number='+data.order_number+'&payment_id='+data.transID;
 					});
