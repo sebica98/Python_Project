@@ -1,0 +1,25 @@
+{% extends 'includes/base.html' %}
+
+{% load static %}
+
+{% block head %} 
+<!-- Bootstrap4 files-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="{% static 'css/cart/ui.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'css/cart/cart_style.css' %}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+{% block title %} Order Failed {% endblock %}
+<body>
+{% block content %}
+<h2> Your Order Failed. You can find more details below.</h2>
+<div class="invoice-details mt25">
+    <div class="well">
+        <ul class="list-unstyled mb0">
+            <li><strong>Order</strong> # {{order_number}}</li>
+            <li><strong>Status:</strong> {{payment}}</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
+</body>

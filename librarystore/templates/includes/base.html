@@ -17,7 +17,7 @@
         {% if navbar_item.title == "Logout" and request.user.is_authenticated %}
         <a href="{% url navbar_item.path_name %}" class="fa fa-sign-out">{{navbar_item.title}}</a>
         {% elif navbar_item.title == "Login" and request.user.is_authenticated %}
-        <a href="{% url 'profile' %}" class="fa fa-user"> My Profile</a>
+        <a href="{% url 'dashboard' %}" class="fa fa-user"> My Profile</a>
         {% elif navbar_item.title == "Register" and request.user.is_authenticated %}
         {% elif navbar_item.title == "Cart" %}
         <a href="{% url navbar_item.path_name %}" class="fa fa-shopping-cart"> Cart</a>

@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
 from rest_framework import viewsets, generics
 from .serializers import BookSerializer, AuthorSerializer, UserSerializer
@@ -73,12 +74,14 @@ def user_profile(request):
     navbar_items = Navbar.objects.all().exclude(title="Register")
     if request.method == 'POST':
         u_form = UpdateUserForm(request.POST,instance=request.user)
-        p_form = PasswordChangeForm(data=request.POST, user=request.user)
-        if u_form.is_valid() or p_form.is_valid():
+        p_form = PasswordChangeForm(user=request.user, data=request.POST)
+        if u_form.is_valid():
             u_form.save()
+        if p_form.is_valid():
             p_form.save()
-            messages.success(request,'Your password and name were changed!')
-            return redirect('/')
+            update_session_auth_hash(request, p_form.user)
+        messages.success(request,'Your password and name were changed!')
+        return redirect('/')
     else:
         u_form = UpdateUserForm(instance=request.user)
         p_form = PasswordChangeForm(user=request.user)

@@ -1,0 +1,71 @@
+{% extends 'includes/base.html' %}
+
+{% load static %}
+
+{% block head %} 
+<!-- Bootstrap4 files-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="{% static 'css/cart/ui.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'css/cart/cart_style.css' %}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+
+<section class="section-conten padding-y bg">
+
+	<div class="container">
+		<div class="row">
+		{% include 'includes/dashboard_sidebar.html' %}
+		<main class="col-md-9">
+			<article class="card">
+			<header class="card-header">
+				<strong class="d-inline-block mr-3">Edit your profile</strong>
+	
+			</header>
+			<div class="card-body">
+				<div class="row">
+				<div class="col-md-12">
+					<form action="{% url 'edit_profile' %}" method="POST" enctype="multipart/form-data">
+						{% csrf_token %}
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label>Username</label>
+								{{user_form.username}}
+							</div>
+							<div class="form-group col-md-6">
+								<label>First Name</label>
+								{{user_form.first_name}}
+							</div>
+							<div class="form-group col-md-6">
+								<label>Last Name</label>
+								{{user_form.last_name}}
+							</div>
+							<div class="form-group col-md-6">
+								<label>Email</label>
+								{{user_form.email}}
+							</div>
+						</div>
+						{% if messages %}
+						<ul class="messages">
+							{% for message in messages %}
+							<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+							{% endfor %}
+						</ul>
+						{% endif %}
+						<input type="submit" value="Save" class="btn btn-primary">
+					</form>
+				</div>
+	
+				</div> <!-- row.// -->
+			</div> <!-- card-body .// -->
+	
+			</article> <!-- order-group.// -->
+		</main>
+	</div> <!-- row.// -->
+	</div>
+
+</section>
+
+{% endblock %}

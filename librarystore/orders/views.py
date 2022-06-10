@@ -92,6 +92,23 @@ def payment(request):
     cart_items = CartItem.objects.filter(user=request.user)
 
     for item in cart_items:
+
+        # Check for the quantity of the sold product
+        product = Book.objects.get(id=item.product_id)
+        if product.stock < item.quantity:
+            data2 = {
+                'order_number': order.order_number,
+            }
+            order.is_ordered = False
+            payment.status = 'Cancelled'
+            order.save()
+            payment.save()
+            return JsonResponse(data2)
+
+        else:
+            product.stock -= item.quantity
+            product.save()
+
         orderproduct = OrderProduct()
         orderproduct.order_id = order.id
         orderproduct.payment = payment
@@ -101,14 +118,6 @@ def payment(request):
         orderproduct.product_price = item.product.price
         orderproduct.ordered = True
         orderproduct.save()
-
-        # Check for the quantity of the sold product
-        product = Book.objects.get(id=item.product_id)
-        if product.stock < item.quantity:
-            return HttpResponse('Out of stock')
-        else:
-            product.stock -= item.quantity
-            product.save()
 
     # Clear Cart
     CartItem.objects.filter(user=request.user).delete()
@@ -137,5 +146,21 @@ def order_complete(request):
         }
         return render(request, 'orders/order_complete.html', context)
 
+    except (Payment.DoesNotExist, Order.DoesNotExist):
+        return redirect('home')
+
+def failed_order(request):
+    order_number = request.GET.get('order_number')
+    navbar_items = Navbar.objects.all().exclude(title='register')
+    try:
+         order = Order.objects.get(order_number=order_number)
+         context = {
+            'navbar_items': navbar_items,
+            'order_number': order.order_number,
+            'payment': payment,
+        }
+
+         return render(request, 'orders/order_failed.html', context)
+    
     except (Payment.DoesNotExist, Order.DoesNotExist):
         return redirect('home')
